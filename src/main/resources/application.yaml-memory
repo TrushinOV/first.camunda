@@ -1,0 +1,24 @@
+spring.application.name: application
+spring:
+  datasource:
+    url: jdbc:h2:mem:example-simple;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+camunda:
+  bpm:
+    admin-user:
+      id: postgres
+      password: olvlad14
+    application:
+      delete-upon-undeploy: false
+      scan-for-process-definitions: false
+      deploy-changed-only: true
+      resume-previous-versions: true
+      resume-previous-by: a value
+    job-execution:
+      enabled: true
+    metrics:
+      enabled: false
+      db-reporter-activate: false
+
+
+#camunda.bpm.auto-deployment-enabled: false
+

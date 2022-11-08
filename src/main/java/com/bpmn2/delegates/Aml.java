@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 public class Aml implements JavaDelegate {
     public void execute(DelegateExecution delegateExecution) {
         // Определяем признак toAML по четности суммы
-        Integer amount = (Integer) delegateExecution.getVariable("amount");
+        Long amount = (Long) delegateExecution.getVariable("amount");
         boolean check = amount % 2 == 1;
         delegateExecution.setVariable("toAML", check);
 
