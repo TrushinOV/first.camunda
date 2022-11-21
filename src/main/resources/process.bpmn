@@ -38,6 +38,9 @@
       <bpmn:outgoing>SequenceFlow_06hcqe5</bpmn:outgoing>
     </bpmn:exclusiveGateway>
     <bpmn:serviceTask id="ServiceTask_2" name="Проверить платеж на подозрительность" camunda:delegateExpression="${aml}">
+      <bpmn:extensionElements>
+        <camunda:executionListener delegateExpression="${loggerDelegate}" event="end" />
+      </bpmn:extensionElements>
       <bpmn:incoming>SequenceFlow_05o8euw</bpmn:incoming>
       <bpmn:incoming>SequenceFlow_0btkiaj</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_1okh5kj</bpmn:outgoing>
@@ -53,7 +56,7 @@
       <bpmn:outgoing>SequenceFlow_1wvcdy1</bpmn:outgoing>
     </bpmn:startEvent>
     <bpmn:sequenceFlow id="SequenceFlow_03jrbxx" sourceRef="ExclusiveGateway_4" targetRef="ExclusiveGateway_5">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${approved}</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${approved_f}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="SequenceFlow_06hcqe5" name="Нет" sourceRef="ExclusiveGateway_5" targetRef="ServiceTask_5">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${!isInterbank}</bpmn:conditionExpression>
@@ -67,7 +70,7 @@
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="SequenceFlow_1okh5kj" sourceRef="ServiceTask_2" targetRef="ExclusiveGateway_3" />
     <bpmn:sequenceFlow id="SequenceFlow_05o8euw" name=" Да" sourceRef="ExclusiveGateway_2" targetRef="ServiceTask_2">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${approved}</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${approved_s}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="SequenceFlow_1ub8dq8" sourceRef="ExclusiveGateway_1" targetRef="UserTask_1">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${amount &gt;= 1000}</bpmn:conditionExpression>
@@ -128,15 +131,15 @@
               <camunda:constraint name="readonly" />
             </camunda:validation>
           </camunda:formField>
-          <camunda:formField id="approved" label="Одобрить?" type="boolean" defaultValue="true" />
+          <camunda:formField id="approved_s" label="Одобрить (супервизор)?" type="boolean" defaultValue="true" />
         </camunda:formData>
-        <camunda:executionListener delegateExpression="${payAgreement}" event="end" />
+        <camunda:executionListener delegateExpression="${payAgreementSupervisor}" event="end" />
       </bpmn:extensionElements>
       <bpmn:incoming>SequenceFlow_1ub8dq8</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_060bsky</bpmn:outgoing>
     </bpmn:userTask>
     <bpmn:sequenceFlow id="SequenceFlow_06xnlz9" name="Нет" sourceRef="ExclusiveGateway_2" targetRef="EndEvent_2">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${!approved}</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${!approved_s}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="SequenceFlow_060bsky" sourceRef="UserTask_1" targetRef="ExclusiveGateway_2" />
     <bpmn:exclusiveGateway id="ExclusiveGateway_4" name="Отказано?">
@@ -168,16 +171,16 @@
               <camunda:constraint name="readonly" />
             </camunda:validation>
           </camunda:formField>
-          <camunda:formField id="approved" label="Одобрить?" type="boolean" />
+          <camunda:formField id="approved_f" label="Одобрить (финмониторинг)?" type="boolean" />
         </camunda:formData>
-        <camunda:executionListener delegateExpression="${loggerDelegate}" event="end" />
+        <camunda:executionListener delegateExpression="${payAgreementFinmonitoring}" event="end" />
       </bpmn:extensionElements>
       <bpmn:incoming>SequenceFlow_1s14j92</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_0psznqm</bpmn:outgoing>
     </bpmn:userTask>
     <bpmn:sequenceFlow id="SequenceFlow_0psznqm" sourceRef="UserTask_3" targetRef="ExclusiveGateway_4" />
     <bpmn:sequenceFlow id="SequenceFlow_0yh93rw" sourceRef="ExclusiveGateway_4" targetRef="EndEvent_3">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${!approved}</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${!approved_f}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="SequenceFlow_1wvcdy1" sourceRef="StartEvent_1" targetRef="ExclusiveGateway_1" />
   </bpmn:process>

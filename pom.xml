@@ -7,6 +7,8 @@
   <groupId>com.bpmn2</groupId>
   <artifactId>first.camunda</artifactId>
   <version>1.0.0-SNAPSHOT</version>
+  <name>first.camunda</name>
+  <description>Учебный проект по camunda (Уралсиб, Трушин О.В.)</description>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
